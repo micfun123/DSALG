@@ -18,7 +18,7 @@ def InsertionSort(arr):
         key = arr[index]
         privious_index = index - 1
         while privious_index >= 0 and arr[privious_index] > key:
-            arr[privious_index + 1] = arr[privious_index]
+            arr[privious_index + 1], arr[privious_index] = arr[privious_index], arr[privious_index + 1]
             privious_index = privious_index - 1
 
     return arr
