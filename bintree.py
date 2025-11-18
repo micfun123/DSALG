@@ -194,6 +194,47 @@ class BinarySearchTree:
         print("----------------------------")
 
 
+    # --- sum at k height ---
+    def sumAtKheight(self, k):
+        """
+        Calculates the sum of all node keys at a specific height K (where root is height 0).
+        Uses Breadth-First Search (Level Order Traversal).
+        """
+        if not self.root:
+            return 0
+        if k < 0:
+            return 0
+
+        queue = [self.root]
+        current_height = 0
+        
+        while queue:
+            # Check if the target height K has been reached
+            if current_height == k:
+                level_sum = 0
+                for node in queue:
+                    level_sum += node.key
+                return level_sum
+            
+            # Prepare for the next level
+            level_size = len(queue)
+            
+            for _ in range(level_size):
+                current = queue.pop(0) # O(n) operation, consistent with existing bfs method
+                
+                if current.left:
+                    queue.append(current.left)
+                if current.right:
+                    queue.append(current.right)
+            
+            current_height += 1
+            
+        # If the tree ends before reaching height K
+        return 0
+    
+
+
+
 def is_trees_identical(node1, node2):
     if node1 is None and node2 is None:
         return True
@@ -239,9 +280,13 @@ for x in [30, 20, 40, 70, 60, 80]:
 
 print(f"Trees identical: {is_trees_identical(bst.root, bst2.root)}")
 
-# Create Balanced BST from sorted array
-sorted_array = [10, 20, 30, 40, 50,
-                60, 70, 80, 90]
-balanced_root = BalencedBST(sorted_array)
-balanced_bst = BinarySearchTree()
 
+
+#sum at k height
+new_tree = BinarySearchTree()
+for x in [15, 10, 20, 8, 12, 17, 25]:
+    new_tree.insert(x)
+
+k = 2
+sum_at_k = new_tree.sumAtKheight(k)
+print(f"Sum of nodes at height {k}: {sum_at_k}") 
