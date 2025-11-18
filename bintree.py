@@ -155,6 +155,43 @@ class BinarySearchTree:
             return 1
         return self._count_leaf_nodes_recursive(current.left) + self._count_leaf_nodes_recursive(current.right)
     
+    
+    # --- 5. Print Row by Row (Level Order Traversal using standard list) ---
+    def print_level_order(self):
+        """
+        Prints the BST row by row using a standard Python list as a queue 
+        for Level Order Traversal, without using collections.
+        """
+        if not self.root:
+            print("Tree is empty.")
+            return
+
+        # Initialize the queue using a standard Python list
+        # Note: Using list.pop(0) for dequeuing is O(n) but adheres to the constraint.
+        queue = [self.root]
+        
+        print("\n--- Tree Level Order Print ---")
+        
+        while queue:
+            # Get the number of nodes at the current level
+            level_size = len(queue)
+            current_level_keys = []
+            
+            # Process all nodes at the current level
+            for _ in range(level_size):
+                # Dequeue the first node (O(n) operation)
+                current = queue.pop(0) 
+                current_level_keys.append(str(current.key))
+                
+                # Enqueue children for the next level
+                if current.left:
+                    queue.append(current.left)
+                if current.right:
+                    queue.append(current.right)
+            
+            # Print the completed row
+            print(" ".join(current_level_keys))
+        print("----------------------------")
 
 
 def is_trees_identical(node1, node2):
@@ -192,6 +229,8 @@ print(f"Preorder: {bst.preorder()}")
 print(f"Postorder: {bst.postorder()}")
 print(f"Total Nodes: {bst.count_nodes()}")
 print(f"Leaf Nodes: {bst.count_leaf_nodes()}")
+
+bst.print_level_order()
 
 # Create another BST for comparison
 bst2 = BinarySearchTree()
