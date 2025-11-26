@@ -96,19 +96,37 @@ class TwoThreeTree:
         node.right = None  # update the 2nd child reference in the node, as it contains only 1 key now
         return p_key, newnode
 
-    def traverse(self, node):
+    def traverse_inorder(self, node):
         if node is not None:
             if node.is_leaf():
                 print(node.key1, end=" ")
                 if node.key2 is not None:
                     print(node.key2, end=" ")
             else:
-                self.traverse(node.left)
+                self.traverse_inorder(node.left)
                 print(node.key1, end=" ")
-                self.traverse(node.middle)
+                self.traverse_inorder(node.middle)
                 if node.key2 is not None:
                     print(node.key2, end=" ")
-                    self.traverse(node.right)
+                    self.traverse_inorder(node.right)
+
+    def traverse_preorder(self, node):
+        if node is not None:
+            print(node.key1, end=" ")
+            if node.key2 is not None:
+                print(node.key2, end=" ")
+            self.traverse_preorder(node.left)
+            self.traverse_preorder(node.middle)
+            self.traverse_preorder(node.right)
+
+    def traverse_postorder(self, node):
+        if node is not None:
+            self.traverse_postorder(node.left)
+            self.traverse_postorder(node.middle)
+            self.traverse_postorder(node.right)
+            print(node.key1, end=" ")
+            if node.key2 is not None:
+                print(node.key2, end=" ")
 
     def search(self, key):
         return self._search(self.root, key)
@@ -123,6 +141,16 @@ class TwoThreeTree:
         child = node.get_child(key)
         return self._search(child, key)
 
+    def height(self):
+        return self._height(self.root)
+
+    def _height(self, node):
+        if node is None:
+            return 0
+        if node.is_leaf():
+            return 1
+        return 1 + self._height(node.left)
+
 
 if __name__ == "__main__":
     tree = TwoThreeTree()
@@ -131,7 +159,7 @@ if __name__ == "__main__":
         tree.insert(key)
 
     print("Traversal of 2-3 tree:")
-    tree.traverse(tree.root)
+    tree.traverse_inorder(tree.root)
     print()
 
     search_keys = [6, 15, 25, 55]
