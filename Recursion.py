@@ -68,3 +68,46 @@ print(recpalindrome("racecar"))  # Output: True
 print(recpalindrome("hello"))    # Output: False
 
 
+
+def sum_digits(n):
+    # Base Case: Single digit number
+    if n < 10:
+        return n
+    
+    # Recursive Step: Last digit + sum of the remaining digits
+    return (n % 10) + sum_digits(n // 10)
+
+print(sum_digits(1234))  # Output: 10
+
+def flatten(nested_list):
+    result = []
+    for item in nested_list:
+        if isinstance(item, list):
+            # If item is a list, recurse and add the result
+            result.extend(flatten(item))
+        else:
+            # Base case effectively: it's just a number
+            result.append(item)
+    return result
+
+nested = [1, [2, [3, 4], 5], 6]
+print(flatten(nested))  # Output: [1, 2, 3, 4, 5, 6]
+
+
+def validate_brackets(s):
+    bracket_map = {')': '(', '}': '{', ']': '['}
+    open_brackets = set(bracket_map.values())
+    stack = []
+
+    for char in s:
+        if char in open_brackets:
+            stack.append(char)
+        elif char in bracket_map:
+            if not stack or stack[-1] != bracket_map[char]:
+                return False
+            stack.pop()
+
+    return len(stack) == 0
+
+print(validate_brackets("({[]})"))  # Output: True
+print(validate_brackets("({[})"))   # Output: False
