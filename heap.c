@@ -39,6 +39,18 @@ int getparent(int nodeI){
 }
 
 
+int leftchildindex(int nodeI, minHeap* heap){
+    if(2 * nodeI + 1 > heap->size){return -1;}    
+    return 2 * nodeI + 1;
+}
+
+
+int rightchildindex(int nodeI, minHeap* heap){
+    if(2 * nodeI + 2 > heap->size){return -1;}    
+    return 2 * nodeI + 2;
+}
+
+
 void bubbleup(int nodeI, minHeap* heap){
     int parentI = getparent(nodeI);
     if (parentI == -1) return;
@@ -49,11 +61,34 @@ void bubbleup(int nodeI, minHeap* heap){
     }
 }
 
+void bubbledown(int nodeI, minHeap* heap){
+    int leftI = leftchildindex(nodeI,heap);
+    int rightI = rightchildindex(nodeI,heap);
+    int smallestI = nodeI;
+    if ((leftI != -1) && (heap->array[leftI] < heap->array[smallestI])){
+        smallestI = leftI;
+    }
+    if ((leftI != -1) && (heap->array[rightI] < heap->array[smallestI])){
+        smallestI = rightI;
+    }
+    if(smallestI != nodeI){
+        swap(&heap->array[nodeI], &heap->array[smallestI]);
+        bubbledown(smallestI,heap);
+    }
+}
+
 void add(int val,minHeap* heap){
     heap->size = heap->size + 1;
     heap->array = realloc(heap->array, heap->size * sizeof(int));
     heap->array[heap->size -1 ] = val;
     bubbleup(heap->size - 1 ,heap);
+}
+
+void pop(minHeap* heap){
+    heap->array[0] = heap->array[heap->size - 1];
+    heap->size = heap->size - 1;
+    heap->array = realloc(heap->array, heap->size * sizeof(int));
+    bubbledown(0,heap);
 }
 
 
@@ -78,6 +113,12 @@ int main()
         printf("%d ", heap->array[i]);
     }
     printf("\n");
+
+    pop(heap);
+    printf("Elements in the heap:\n");
+    for (int i = 0; i < heap->size; i++) {
+        printf("%d ", heap->array[i]);
+    }
 
     return 0;
 }
