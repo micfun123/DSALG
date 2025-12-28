@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h> 
 
-#define FLOORDIV(a,b) \
-((a)/(b) - (((a)%(b) != 0) && (((a)%(b) > 0) != ((b) > 0))))
-
 
 
 typedef struct minHeap
@@ -36,16 +33,16 @@ void swap(int* a, int* b)
 
 
 int getparent(int nodeI){    
-    if (nodeI <= 0) return NULL;
-    return FLOORDIV((nodeI - 1), 2);
+    if (nodeI <= 0) return -1;
+    return (nodeI - 1) / 2;
 
 }
 
 
 void bubbleup(int nodeI, minHeap* heap){
     int parentI = getparent(nodeI);
-    if (parentI == NULL) return;
-    while ((parentI != NULL) && (heap->array[parentI] > heap->array[nodeI])){
+    if (parentI == -1) return;
+    while ((parentI != -1) && (heap->array[parentI] > heap->array[nodeI])){
         swap(&heap->array[parentI], &heap->array[nodeI]);
         nodeI = parentI;
         parentI = getparent(nodeI);
@@ -81,9 +78,6 @@ int main()
         printf("%d ", heap->array[i]);
     }
     printf("\n");
-
-
-
 
     return 0;
 }
