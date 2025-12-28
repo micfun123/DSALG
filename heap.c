@@ -54,9 +54,9 @@ void bubbleup(int nodeI, minHeap* heap){
 
 void add(int val,minHeap* heap){
     heap->size = heap->size + 1;
-    heap->array = realloc(heap->array, heap->size);
+    heap->array = realloc(heap->array, heap->size * sizeof(int));
     heap->array[heap->size -1 ] = val;
-    bubbleup(heap->size,heap);
+    bubbleup(heap->size - 1 ,heap);
 }
 
 
